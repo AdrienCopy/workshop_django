@@ -266,3 +266,76 @@ def delete_task(request, pk):
     context = {'task': task}
     return render(request, 'todo/delete_task.html', context)
 ```
+
+**_Explication_**
+#### Importations nécessaires
+
+```python
+from django.shortcuts import render, redirect
+from .models import Task
+from .forms import TaskForm
+```
+- from django.shortcuts import render, redirect :
+  
+    - render est une fonction utilitaire de Django utilisée pour générer une réponse HTTP en utilisant un modèle (template). Elle prend la requête, le nom du template, et un dictionnaire de contexte (données à passer au template).
+    - redirect est une fonction utilitaire de Django utilisée pour rediriger l'utilisateur vers une autre URL.
+      
+- from .models import Task : Importe le modèle Task que vous avez défini précédemment dans models.py. Ce modèle représente une tâche dans la base de données.
+  
+- from .forms import TaskForm : Importe le formulaire TaskForm que vous avez probablement défini dans un fichier forms.py. TaskForm est un formulaire Django lié au modèle Task, qui est utilisé pour créer et modifier des objets Task.
+
+#### Définition de la vue index
+
+```python
+def index(request):
+```
+
+La fonction index est une vue Django qui prend un paramètre, request. Ce paramètre représente l'objet de requête HTTP qui est passé automatiquement par Django lorsque la vue est appelée.
+
+#### Récupérer toutes les tâches de la base de données
+
+```python
+tasks = Task.objects.all()
+```
+- Task.objects.all() : Utilise le gestionnaire d'objets (objects) du modèle Task pour récupérer tous les objets Task de la base de données. all() retourne un QuerySet contenant toutes les instances de Task.
+
+#### Créer une instance du formulaire TaskForm
+
+```python
+form = TaskForm()
+```
+
+- TaskForm() : Crée une instance vide du formulaire TaskForm, qui sera utilisée pour permettre à l'utilisateur de saisir les données pour une nouvelle tâche.
+
+#### Gérer les soumissions de formulaire
+
+```python
+if request.method == 'POST':
+    form = TaskForm(request.POST)
+    if form.is_valid():
+        form.save()
+    return redirect('/')
+```
+
+- if request.method == 'POST': : Vérifie si la méthode HTTP de la requête est POST. Cela signifie que l'utilisateur a soumis le formulaire (puisque les formulaires HTML utilisent généralement la méthode POST pour soumettre des données).
+
+- form = TaskForm(request.POST) : Crée une nouvelle instance du formulaire TaskForm en utilisant les données soumises dans la requête (request.POST). request.POST est un dictionnaire contenant toutes les données du formulaire envoyées par l'utilisateur.
+
+- if form.is_valid(): : Vérifie si les données soumises dans le formulaire sont valides (par exemple, tous les champs obligatoires sont remplis, les données sont du bon type, etc.). La méthode is_valid() fait cette vérification.
+
+- form.save() : Si le formulaire est valide, cette méthode sauvegarde les données du formulaire dans la base de données en créant un nouvel objet Task.
+
+- return redirect('/') : Après avoir sauvegardé les données, l'utilisateur est redirigé vers la page d'accueil ('/'). La fonction redirect prend l'URL de redirection comme argument.
+
+#### Préparer le contexte et rendre le template
+
+```python
+context = {'tasks': tasks, 'form': form}
+return render(request, 'todo/index.html', context)
+```
+- context = {'tasks': tasks, 'form': form} : Crée un dictionnaire nommé context qui contient les données à envoyer au template. Ici, tasks contient tous les objets Task de la base de données et form est le formulaire TaskForm (vide ou avec des erreurs si le formulaire n'était pas valide).
+
+- return render(request, 'todo/index.html', context) : Utilise la fonction render pour générer une réponse HTTP en utilisant le template todo/index.html et en passant le contexte contenant les tâches et le formulaire.
+
+
+
