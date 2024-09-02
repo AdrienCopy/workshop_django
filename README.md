@@ -466,11 +466,27 @@ path("admin/", admin.site.urls),
 - path("admin/", admin.site.urls) : Cette ligne associe l'URL "admin/" à l'interface d'administration par défaut de Django. Lorsque vous accédez à http://yourdomain.com/admin/, Django charge le site d'administration, où vous pouvez gérer vos modèles et données.
 
 #### Route pour la vue index
+
 ```python
 path('', todo.views.index, name='index'),
 ```
 - path('', todo.views.index, name='index') :
-'' : La chaîne vide '' représente l'URL racine du site web. Cela signifie que lorsque les utilisateurs visitent http://yourdomain.com/, Django exécutera la vue index de l'application todo.
-todo.views.index : Indique que Django doit appeler la fonction index définie dans todo/views.py pour gérer cette URL.
-name='index' : Attribue un nom à cette route URL. Les noms d'URL sont utiles pour créer des liens internes dans les templates Django, car ils permettent de faire référence aux routes URL de manière symbolique plutôt que d'utiliser des URLs statiques.
   
+    - '' : La chaîne vide '' représente l'URL racine du site web. Cela signifie que lorsque les utilisateurs visitent http://yourdomain.com/, Django exécutera la vue index de l'application todo.
+      
+    -  todo.views.index : Indique que Django doit appeler la fonction index définie dans todo/views.py pour gérer cette URL.
+      
+    - name='index' : Attribue un nom à cette route URL. Les noms d'URL sont utiles pour créer des liens internes dans les templates Django, car ils permettent de faire référence aux routes URL de manière symbolique plutôt que d'utiliser des URLs statiques.
+
+#### Route pour la vue update_task
+
+```python
+path('todo/update_task/<str:pk>/', todo.views.update_task, name='update_task'),
+```
+
+- path('todo/update_task/<str:pk>/', todo.views.update_task, name='update_task') :
+    - 'todo/update_task/<str:pk>/' : Ce chemin d'URL inclut une partie dynamique <str:pk>. Ici, <str:pk> capture un segment de l'URL comme une variable pk (primary key), qui est passée à la vue update_task en tant qu'argument. str indique que pk doit être une chaîne de caractères.
+  
+    - todo.views.update_task : Indique que Django doit appeler la fonction update_task définie dans todo/views.py pour gérer cette URL.
+
+    - name='update_task' : Attribue un nom à cette route URL, ce qui permet de la référencer dans les templates et le code Python.
