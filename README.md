@@ -333,9 +333,144 @@ if request.method == 'POST':
 context = {'tasks': tasks, 'form': form}
 return render(request, 'todo/index.html', context)
 ```
+
+
 - context = {'tasks': tasks, 'form': form} : Crée un dictionnaire nommé context qui contient les données à envoyer au template. Ici, tasks contient tous les objets Task de la base de données et form est le formulaire TaskForm (vide ou avec des erreurs si le formulaire n'était pas valide).
 
 - return render(request, 'todo/index.html', context) : Utilise la fonction render pour générer une réponse HTTP en utilisant le template todo/index.html et en passant le contexte contenant les tâches et le formulaire.
 
 
 
+## Configurer les templates pour les pages HTML
+
+Créez un dossier nommé templates dans le répertoire todo et ajoutez un sous-dossier nommé todo. Créez ensuite trois fichiers HTML : index.html, update_task.html, et delete_task.html.
+
+**index.html**
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>To-Do List</title>
+</head>
+<body>
+    <h1>To-Do List</h1>
+    <form method="POST" action="{% url 'index' %}">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Add Task</button>
+    </form>
+    <ul>
+        {% for task in tasks %}
+        <li>
+            {{ task.title }}
+            {% if task.completed %}
+                (Completed)
+            {% endif %}
+            <a href="{% url 'update_task' task.id %}">Edit</a>
+            <a href="{% url 'delete_task' task.id %}">Delete</a>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+```
+**update_task.html**
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Task</title>
+</head>
+<body>
+    <h1>Update Task</h1>
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{ form }}
+        <button type="submit">Update</button>
+    </form>
+</body>
+</html>
+```
+**delete_task.html**
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Task</title>
+</head>
+<body>
+    <h1>Are you sure you want to delete "{{ task.title }}"?</h1>
+    <form method="POST" action="">
+        {% csrf_token %}
+        <button type="submit">Yes, Delete</button>
+    </form>
+    <a href="/">Cancel</a>
+</body>
+</html>
+```
+
+## Définir les URLs pour mapper les vues
+
+Configurez les URLs dans urls.py de l'application todo.
+
+```python
+from django.contrib import admin
+from django.urls import path
+import todo.views
+
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path('', todo.views.index, name='index'),
+    path('todo/update_task/<str:pk>/', todo.views.update_task, name='update_task'),
+    path('todo/delete_task/<str:pk>/', todo.views.delete_task, name='delete_task'),
+]
+```
+
+**_Explication_**
+
+#### Importation des modules nécessaires
+
+```python
+from django.contrib import admin
+from django.urls import path
+import todo.views
+```
+
+- from django.contrib import admin : Importe le module d'administration de Django. Ce module est utilisé pour gérer le site d'administration de Django, qui est une interface graphique permettant de gérer les données de votre application.
+
+- from django.urls import path : Importe la fonction path du module django.urls. path est utilisé pour définir des routes URL et les associer à des vues spécifiques.
+
+- import todo.views : Importe le module views de l'application todo. Ce module contient les fonctions de vue (comme index, update_task, delete_task) que vous avez définies dans votre application. Ces vues déterminent la logique à exécuter lorsqu'une URL spécifique est demandée.
+
+#### Définition du urlpatterns 
+
+```python
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path('', todo.views.index, name='index'),
+    path('todo/update_task/<str:pk>/', todo.views.update_task, name='update_task'),
+    path('todo/delete_task/<str:pk>/', todo.views.delete_task, name='delete_task'),
+]
+```
+
+- urlpatterns est une liste de routes URL que Django utilise pour faire correspondre les URLs demandées par les utilisateurs aux vues correspondantes.
+
+#### Route pour le site d'administration de Django
+
+```python
+path("admin/", admin.site.urls),
+```
+- path("admin/", admin.site.urls) : Cette ligne associe l'URL "admin/" à l'interface d'administration par défaut de Django. Lorsque vous accédez à http://yourdomain.com/admin/, Django charge le site d'administration, où vous pouvez gérer vos modèles et données.
+
+#### Route pour la vue index
+```python
+path('', todo.views.index, name='index'),
+```
+- path('', todo.views.index, name='index') :
+'' : La chaîne vide '' représente l'URL racine du site web. Cela signifie que lorsque les utilisateurs visitent http://yourdomain.com/, Django exécutera la vue index de l'application todo.
+todo.views.index : Indique que Django doit appeler la fonction index définie dans todo/views.py pour gérer cette URL.
+name='index' : Attribue un nom à cette route URL. Les noms d'URL sont utiles pour créer des liens internes dans les templates Django, car ils permettent de faire référence aux routes URL de manière symbolique plutôt que d'utiliser des URLs statiques.
+  
