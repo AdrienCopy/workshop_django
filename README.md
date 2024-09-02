@@ -185,7 +185,47 @@ Cette commande applique les migrations à la base de données.
 
 - **Appliquer les changements :** Par exemple, après avoir exécuté makemigrations pour notre modèle Task, Django crée un fichier de migration qui, lorsqu'il est exécuté avec migrate, crée une table task avec les colonnes title et completed.
 
+## Créer des formulaires pour gérer les entrées utilisateur
+Créez un formulaire Django pour le modèle Task dans forms.py.
+```python
+from django import forms
+from .models import Task
 
+class TaskForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = ['title', 'completed']
+
+```
+
+**_Explication_**
+#### Importation des modules nécessaires
+
+```python
+from django import forms
+from .models import Task
+```
+- from django import forms : Cette ligne importe le module forms de Django. Ce module contient des classes et des fonctionnalités pour créer et gérer des formulaires dans Django.
+
+- from .models import Task : Cette ligne importe le modèle Task depuis le fichier models.py de l'application. Ce modèle représente une tâche dans votre base de données.
+
+#### Définition de la classe TaskForm
+```python
+class TaskForm(forms.ModelForm):
+```
+- class TaskForm(forms.ModelForm): : Cette ligne définit une nouvelle classe appelée TaskForm, qui hérite de forms.ModelForm. ModelForm est une classe de formulaire spéciale dans Django qui simplifie la création de formulaires liés à des modèles de base de données. En utilisant ModelForm, vous pouvez facilement générer un formulaire basé sur un modèle Django, avec tous les champs nécessaires.
+#### Définition de la classe interne Meta
+```python
+class Meta:
+    model = Task
+    fields = ['title', 'completed']
+```
+- class Meta: : La classe interne Meta est une convention en Django utilisée pour fournir des informations supplémentaires à propos du formulaire. Elle permet de spécifier quel modèle ce formulaire représente et quels champs du modèle doivent être inclus dans le formulaire.
+
+- model = Task : Indique que le formulaire TaskForm est lié au modèle Task. Cela signifie que Django va utiliser ce modèle pour générer automatiquement les champs du formulaire.
+
+- fields = ['title', 'completed'] : Spécifie les champs du modèle Task qui doivent être inclus dans le formulaire. Dans ce cas, le formulaire inclura les champs title et completed de l'objet Task. Si vous omettez des champs ou les ajoutez tous, le formulaire comprendra seulement les champs listés ici.
+  
 ## Créer des vues pour gérer les tâches
 
 Créez des vues pour afficher la liste des tâches, ajouter une nouvelle tâche, mettre à jour une tâche existante et supprimer une tâche dans views.py.
