@@ -345,6 +345,19 @@ return render(request, 'todo/index.html', context)
 
 Créez un dossier nommé templates dans le répertoire todo et ajoutez un sous-dossier nommé todo. Créez ensuite trois fichiers HTML : index.html, update_task.html, et delete_task.html.
 
+```
+todo/
+├── templates/
+│   └── todo/
+│       └── index.html
+│       └── update_task.html
+│       └── delete_task.html
+├── views.py
+├── models.py
+└── ...
+```
+
+
 **index.html**
 ```html
 <!DOCTYPE html>
