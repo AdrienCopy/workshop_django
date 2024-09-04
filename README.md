@@ -414,7 +414,7 @@ Créez un dossier nommé templates dans le répertoire todo et ajoutez un sous-d
 
 ## Définir les URLs pour mapper les vues
 
-Configurez les URLs dans urls.py de l'application todo.
+Configurez les URLs dans urls.py dans le dossier du projet.
 
 ```python
 from django.contrib import admin
