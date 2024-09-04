@@ -490,3 +490,38 @@ path('todo/update_task/<str:pk>/', todo.views.update_task, name='update_task'),
     - todo.views.update_task : Indique que Django doit appeler la fonction update_task définie dans todo/views.py pour gérer cette URL.
 
     - name='update_task' : Attribue un nom à cette route URL, ce qui permet de la référencer dans les templates et le code Python.
+
+
+
+## Créer un superutilisateur et afficher l'app todo
+
+Assurez-vous que vous êtes dans le répertoire de votre projet Django, où se trouve le fichier manage.py.
+
+#### Exécutez la commande suivante pour créer un superutilisateur
+
+```
+python manage.py createsuperuser
+```
+
+#### Saisir les informations du superutilisateur
+
+Username, Email address, Password et Password (again) !
+
+Une fois les informations fournies, Django créera le superutilisateur. Vous verrez un message de confirmation indiquant que le superutilisateur a été créé avec succès.
+
+Vous pouvez maintenant utiliser ce superutilisateur pour vous connecter à l'interface d'administration de Django à l'adresse http://127.0.0.1:8000/admin/
+
+#### Afficher l'application todo dans l'interface d'administration
+
+- Ouvrir le fichier admin.py de l'application todo
+- Enregistrer le modèle Task dans l'admin
+
+```python
+from django.contrib import admin
+from .models import Task
+
+@admin.register(Task)
+class TaskAdmin(admin.ModelAdmin):
+    list_display = ('title', 'completed')
+```
+
