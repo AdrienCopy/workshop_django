@@ -493,7 +493,7 @@ path('todo/update_task/<str:pk>/', todo.views.update_task, name='update_task'),
 
 
 
-## Créer un superutilisateur et afficher l'app todo
+## Créer un superutilisateur et afficher l'app todo (dans l'interface d'administration de Django)
 
 Assurez-vous que vous êtes dans le répertoire de votre projet Django, où se trouve le fichier manage.py.
 
