@@ -528,6 +528,16 @@ todo/
 └── ...
 
 ```
+#### Paramétrage des fichiers statiques dans settings.py
+
+Dans votre fichier settings.py, vous devez configurer certains paramètres pour que Django sache où trouver les fichiers statiques.
+
+```python
+STATIC_URL = '/static/'
+```
+
+- STATIC_URL : C'est l'URL de base où les fichiers statiques seront servis. Pendant le développement.
+  
 
 #### Utilisation des fichiers CSS dans les templates
 
