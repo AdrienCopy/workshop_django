@@ -492,6 +492,51 @@ path('todo/update_task/<str:pk>/', todo.views.update_task, name='update_task'),
     - name='update_task' : Attribue un nom à cette route URL, ce qui permet de la référencer dans les templates et le code Python.
 
 
+## Gestion des fichiers CSS
+
+Django vous permet de centraliser et de gérer les fichiers CSS (ainsi que les autres fichiers statiques) dans des répertoires spécifiques.
+
+- Répertoires statiques des applications : Chaque application Django peut avoir son propre répertoire static, où vous pouvez placer les fichiers CSS spécifiques à cette application.
+  
+- Répertoire statique global : Vous pouvez également avoir un répertoire static global au niveau du projet, souvent utilisé pour les fichiers CSS, JS ou images communs à plusieurs applications.
+
+#### Pour notre app todo 
+
+Crée le dossier static, todo et le fichier style.css
+
+```
+todo/
+├── static/
+│   └── todo/
+│       └── style.css
+├── templates/
+├── views.py
+├── models.py
+└── ...
+
+```
+
+#### Utilisation des fichiers CSS dans les templates
+
+Pour utiliser un fichier CSS dans un template Django, vous devez d'abord charger les fichiers statiques en utilisant la balise {% load static %} et ensuite l'inclure dans le template.
+
+Voici comment vous pourriez structurer un template HTML pour inclure un fichier CSS.
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Django App</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'myapp/style.css' %}">
+</head>
+<body>
+    <h1>Bienvenue sur ma page Django</h1>
+</body>
+</html>
+```
 
 ## Créer un superutilisateur et afficher l'app todo (dans l'interface d'administration de Django)
 
