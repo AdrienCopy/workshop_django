@@ -246,25 +246,6 @@ def index(request):
         return redirect('/')
     context = {'tasks': tasks, 'form': form}
     return render(request, 'todo/index.html', context)
-
-def update_task(request, pk):
-    task = Task.objects.get(id=pk)
-    form = TaskForm(instance=task)
-    if request.method == 'POST':
-        form = TaskForm(request.POST, instance=task)
-        if form.is_valid():
-            form.save()
-            return redirect('/')
-    context = {'form': form}
-    return render(request, 'todo/update_task.html', context)
-
-def delete_task(request, pk):
-    task = Task.objects.get(id=pk)
-    if request.method == 'POST':
-        task.delete()
-        return redirect('/')
-    context = {'task': task}
-    return render(request, 'todo/delete_task.html', context)
 ```
 
 **_Explication_**
@@ -339,6 +320,40 @@ return render(request, 'todo/index.html', context)
 
 - return render(request, 'todo/index.html', context) : Utilise la fonction render pour générer une réponse HTTP en utilisant le template todo/index.html et en passant le contexte contenant les tâches et le formulaire.
 
+Défi : Implémenter la fonctionnalité de mise à jour des tâches ! 🚀
+
+<details> <summary>Voir la solution potentielle</summary>
+
+
+
+```python
+def update_task(request, pk):
+    task = Task.objects.get(id=pk)
+    form = TaskForm(instance=task)
+    if request.method == 'POST':
+        form = TaskForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+            return redirect('/')
+    context = {'form': form}
+    return render(request, 'todo/update_task.html', context)
+```
+</details>
+
+Défi : Implémenter la fonctionnalité de suppression des tâches ! 🚀
+
+<details> <summary>Voir la solution potentielle</summary>
+    
+```python
+def delete_task(request, pk):
+    task = Task.objects.get(id=pk)
+    if request.method == 'POST':
+        task.delete()
+        return redirect('/')
+    context = {'task': task}
+    return render(request, 'todo/delete_task.html', context)
+```
+</details>
 
 
 ## Configurer les templates pour les pages HTML
